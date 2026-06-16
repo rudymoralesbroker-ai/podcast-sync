@@ -43,10 +43,10 @@ def get_latest_spotify_episode(token):
     response = requests.get(
         "https://api.spotify.com/v1/shows/{}/episodes".format(SPOTIFY_SHOW_ID),
         headers={"Authorization": "Bearer {}".format(token)},
-        params={"limit": 1, "market": "US"}
+        params={"limit": 10}
     )
     response.raise_for_status()
-    items = response.json().get("items", [])
+    items = [item for item in response.json().get("items", []) if item is not None]
     if not items:
         raise Exception("No se encontraron episodios en Spotify")
     return items[0]
